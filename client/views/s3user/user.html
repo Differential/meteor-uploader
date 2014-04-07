@@ -1,0 +1,68 @@
+<template name='s3_file_row'>
+  {{#isolate}}
+  <tr class='{{processing}}'>
+    <td class='{{processing}} col-md-1 col-sm-1 col-xs-1 col-lg-1'>
+      {{#if complete}}
+      <input id='{{_id}}' type='checkbox' class='selected-file' value='{{_id}}'>
+      {{/if}}
+    </td>
+    <td class='{{processing}} s3-file-name col-md-6 col-sm-6 col-xs-6 col-lg-6'>
+      {{#if error}}
+      <!-- Can't download what doesn't exist :) -->
+      {{else}}
+      {{#if url}}
+      <a target='_blank' href='{{url}}'><span class='glyphicon glyphicon-cloud-download'></span></a>
+      {{/if}}
+      {{/if}}
+      <div class='path-popover path-name'><small>{{name}}</small></div>
+    </td>
+    <td class='text-right {{processing}} col-md-3 col-sm-3 col-xs-3 col-lg-3 uploaded-time-ago ago'><small>{{uploaded_ago}}</small></td>
+  </tr>
+  {{/isolate}}
+</template>
+
+<template name='s3list_of_user'>
+  {{#if useUserRole}}
+  <div class='pull-left'>
+    <button class='btn btn-xs btn-default s3-delete-selected-files'>Delete Selected</button>
+    <!-- <button class='btn btn-xs btn-default s3-delete-selected-files disabled'>
+      <span class='glyphicon glyphicon-folder-close'></span>
+      New Folder
+    </button> -->
+  </div>
+  <!-- <div class="pull-right">
+    <button class='btn btn-xs btn-default s3-delete-selected-files disabled'>Upload to Folder</button>
+    <button class='btn btn-xs btn-default s3-delete-selected-files disabled'>Upload</button>
+    {{#if allow_user_config}}
+    <button class='btn btn-xs btn-default s3-delete-selected-files disabled'>
+      <span class='glyphicon glyphicon-cog'></span>
+    </button>
+    {{/if}}
+  </div> -->
+  <table class="table table-condensed">
+    <thead>
+      <tr>
+        <th><input type='checkbox' class='s3-check-all-files'></th>
+        <th>Name</th>
+        <th class='text-right'>Uploaded</th>
+      </tr>
+    </thead>
+    <tbody>
+    {{#if all_files}}
+    {{#each all_files}}
+      {{> s3_file_row}}
+    {{/each}}
+    {{else}}
+    <tr><td colspan=3 class='text-center'>No Files</td></tr>
+    {{/if}}
+    </tbody>
+  </table>
+  {{/if}}
+</template>
+
+<template name='s3config_user_form'>
+  <form class='form-horizontal' role="form">
+    {{> s3config_form}}
+    <button id='S3UserConfigSaveButton' type="submit" class="btn btn-default btn-block">Save</button>
+  </form>
+</template>

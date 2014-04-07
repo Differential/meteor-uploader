@@ -1,0 +1,62 @@
+.s3-upload-progressing {
+  background-color: #dff0d8;
+}
+
+.s3-upload-error {
+  background-color: #f2dede;
+}
+
+.xs3-file-name {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 150px;
+}
+
+.uploaded-time-ago {
+  cursor: pointer;
+}
+
+.s3alert h3:first-of-type {
+  margin-top: -5px;
+}
+
+.s3alert h3 {
+  border-bottom: 1px solid;
+}
+
+.ok-user, .no-user {
+  position: absolute !important;
+  right: 20px;
+  top: 9px !important;
+}
+
+.ok-user {
+  color: green;
+}
+
+.s3-upload-controls.row {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.path-popover {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.popover {
+  max-width: 600px !important;
+}
+
+.s3-config-example-buttons {
+  margin-top: 8px;
+}
+
+.path-name {
+  white-space: nowrap;
+  max-width: 80%;                   /* IE6 needs any width */
+  overflow: hidden;              /* "overflow" value must be different from  visible"*/
+  -o-text-overflow: ellipsis;    /* Opera < 11*/
+  text-overflow:    ellipsis;    /* IE, Safari (WebKit), Opera >= 11, FF > 6 */
+}

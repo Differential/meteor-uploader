@@ -1,0 +1,57 @@
+<template name='s3upload'>
+  {{#if useUserRole}}
+  <div class='s3-upload-controls row'>
+  {{#if noConfig}}
+    {{> noConfigWarning}}
+  {{else}}
+    {{#if current}}
+      <a data-url="{{current}}" class="s3-file-delete-button" href="#">Remove</a> <img class="thumb" src="{{current}}">
+    {{else}}
+      {{#if noUploads}}
+        <input type="file" class='hidden s3-file-upload no-select'>
+        {{#if allow_user_config}}
+        <div class="btn-group col-md-12 col-sm-12 col-xs-12 col-lg-12">
+          {{> uploadButton}}
+          <button class='btn btn-default col-md-1 col-sm-2 col-xs-2 col-lg-1 s3-user-config-button'>
+            <span class='glyphicon glyphicon-cog fa fa-cog'></span>
+          </button>
+        </div>
+        {{else}}
+          {{> uploadButton}}
+        {{/if}}
+      {{else}}
+        {{> s3progress}}
+      {{/if}}
+    {{/if}}
+  {{/if}}
+  </div>
+  {{/if}}
+</template>
+
+<template name="uploadButton">
+  <button type="button" class='btn btn-default {{button_size_css}} s3-file-upload-button'>
+    {{#if s3private}}
+    <span class='glyphicon glyphicon-cloud-upload fa fa-cloud-upload'></span> Private Upload
+    {{else}}
+    <span class='glyphicon glyphicon-cloud-upload fa fa-cloud-upload'></span> Upload
+    {{/if}}
+  </button>
+</template>
+
+<template name='s3progress'>
+  {{#if show_progress}}
+  {{#if has_errors}}
+  <div class='btn btn-block btn-danger'>Upload Aborted</div>
+  {{else}}
+  {{#if complete}}
+  <div class='btn btn-block btn-success'>Upload Complete</div>
+  {{else}}
+  <div class="progress">
+    <div class="progress-bar {{error_class}}" role="progressbar" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progress}}%">
+      <span class="sr-only">{{progress}}% Complete</span>
+    </div>
+  </div>
+  {{/if}}
+  {{/if}}
+  {{/if}}
+</template>
