@@ -12,6 +12,7 @@ Npm.depends({
 Package.on_use(function (api) {
   //Need service-configuration to use Meteor.method
   api.use([
+    'coffeescript',
     'underscore',
     'handlebars',
     'templating',
@@ -21,7 +22,7 @@ Package.on_use(function (api) {
     'coffeescript',
     'roles',
     'bootboxjs',
-    'router',
+    'iron-router',
     'deps'
     ], ['client', 'server']);
   api.use(['handlebars-server'], 'server');
@@ -48,7 +49,7 @@ Package.on_use(function (api) {
     'client/common/bucket_policy_configuration.handlebars',
     'server/s3server.js',
     'server/s3_user_hooks.js',
-    'server/routes.js'
+    'server/routes.coffee'
     ], 'server');
 
 
