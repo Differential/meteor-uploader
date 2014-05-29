@@ -28,7 +28,7 @@ Template.s3Upload.created = ->
 
     if completed? and completed > 0 and completed is total
       Meteor.setTimeout =>
-        Session.set "s3Upload-#{@data.name}", null
+        Session.set "s3Upload-#{@data.name}-progress", null
         Session.set "s3Upload-#{@data.name}-total", 0
         Session.set "s3Upload-#{@data.name}-completed", 0
       , 5000
