@@ -10,18 +10,32 @@
           "version": "0.2.8",
           "dependencies": {
             "sax": {
-              "version": "0.5.5"
+              "version": "0.5.8"
             }
           }
         },
         "debug": {
-          "version": "0.7.2"
+          "version": "0.7.4"
         },
         "stream-counter": {
           "version": "0.1.0",
           "dependencies": {
             "readable-stream": {
-              "version": "1.0.17"
+              "version": "1.0.27-1",
+              "dependencies": {
+                "core-util-is": {
+                  "version": "1.0.1"
+                },
+                "isarray": {
+                  "version": "0.0.1"
+                },
+                "string_decoder": {
+                  "version": "0.10.25-1"
+                },
+                "inherits": {
+                  "version": "2.0.1"
+                }
+              }
             }
           }
         }

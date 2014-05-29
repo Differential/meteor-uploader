@@ -5,7 +5,7 @@ Package.describe({
 var both = ['client', 'server'];
 
 Npm.depends({
-  knox: '0.8.5',
+  'knox': '0.8.5',
   'stream-buffers': '0.2.5'
 });
 
@@ -16,47 +16,38 @@ Package.on_use(function (api) {
     'underscore',
     'handlebars',
     'templating',
-    'collection-hooks',
-    'momentjs',
-    'accounts-base',
-    'coffeescript',
-    'roles',
-    'bootboxjs',
     'iron-router',
+    'streams',
     'deps'
     ], ['client', 'server']);
+
+  api.use(['less'], ['client']);
+
   api.use(['handlebars-server'], 'server');
 
-  // Collections shared by both client and server.
   api.add_files([
-    'lib/files.js',
-    'collection/s3config.js',
-    'collection/s3files.js'
-    ],both);
+    'lib/streams.coffee'
+  ], both);
+
   api.add_files([
-    'client/common/common.html',
-    'client/common/common.js',
-    'client/views/s3admin/admin.html',
-    'client/views/s3admin/admin.js',
-    'client/views/s3upload/upload.html',
-    'client/views/s3upload/upload.js',
-    'client/views/s3user/user.html',
-    'client/views/s3user/user.js',
-    's3.css'
+    'client/views/s3-upload.html',
+    'client/views/s3-upload.coffee',
+    'client/views/s3-upload.less'
     ], 'client');
+
   api.add_files([
-    'client/common/cors_configuration.handlebars',
-    'client/common/bucket_policy_configuration.handlebars',
-    'server/s3server.js',
-    'server/s3_user_hooks.js',
-    'server/routes.coffee'
+    'client/common/cors-configuration.handlebars',
+    'client/common/bucket-policy-configuration.handlebars',
+    'server/s3Config.coffee',
+    'server/s3-server.coffee',
+    'server/cors-routes.coffee'
     ], 'server');
 
 
 
   // Allows user access to Knox
   if(api.export) {
-    api.export('Knox','server');
-    api.export(['S3files','S3config', 'S3'],['client', 'server']);
+    // api.export('Knox','server');
+    // api.export(['S3'],['client', 'server']);
   }
 });

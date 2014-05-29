@@ -1,0 +1,39 @@
+<template name='s3Upload'>
+  <div class='s3-upload-controls row'>
+    {{#if error}}
+      <div class='alert alert-danger'>{{error}}</div>
+    {{/if}}
+
+    {{#if progress}}
+      {{> s3Progress}}
+    {{else}}
+      {{> s3UploadButton}}
+    {{/if}}
+  </div>
+</template>
+
+<template name="s3Progress">
+  {{#if complete}}
+    <div class='alert alert-success'>Upload Complete</div>
+  {{else}}
+    <div class="progress progress-striped">
+      <div class="progress-bar {{error_class}}" role="progressbar" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progress}}%">
+        <span class="sr-only">{{progress}}% Complete</span>
+      </div>
+    </div>
+    <span>Uploading {{currentlyUploading}} of {{total}}</span>
+  {{/if}}
+</template>
+
+<template name="s3UploadButton">
+  <input type="file" multiple={{multiple}} class='hidden s3-file-upload no-select'>
+  <button type="button"
+    class="btn btn-default btn-block s3-file-upload-button {{#if total}}disabled{{/if}}">
+    {{#if total}}
+      Preparing files for transfer...
+    {{else}}
+      <span class="glyphicon glyphicon-cloud-upload fa fa-cloud-upload"></span>
+      Upload
+    {{/if}}
+  </button>
+</template>

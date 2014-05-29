@@ -1,18 +1,13 @@
 {
   "name": "S3-Progress",
-  "description": "A full featured helper for easily uploading files to Amazon S3 from your Meteor application.",
-  "homepage": "https://github.com/digilord/Meteor-S3-Progress",
-  "author": "Digilord <digilord@me.com>",
-  "version": "1.5.8",
-  "git": "https://github.com/digilord/Meteor-S3-Progress.git",
+  "description": "",
+  "homepage": "",
+  "author": "",
+  "version": "0.0.1",
+  "git": "",
   "packages": {
-    "collection-hooks": {},
-    "momentjs": {},
-    "roles": {},
     "iron-router": {},
     "handlebars-server": {},
-    "bootboxjs": {
-      "git": "https://github.com/digilord/meteor-bootboxjs.git"
-    }
+    "streams": {}
   }
 }
