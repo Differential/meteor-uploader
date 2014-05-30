@@ -30,17 +30,17 @@ Package.on_use(function (api) {
   ], both);
 
   api.add_files([
-    'client/views/s3-upload.html',
-    'client/views/s3-upload.coffee',
-    'client/views/s3-upload.less'
+    'client/views/uploader.html',
+    'client/views/uploader.coffee',
+    'client/views/uploader.less'
     ], 'client');
 
   api.add_files([
     'client/common/cors-configuration.handlebars',
     'client/common/bucket-policy-configuration.handlebars',
-    'server/s3Config.coffee',
-    'server/s3-server.coffee',
-    'server/cors-routes.coffee'
+    'server/Uploader.coffee',
+    'server/server.coffee',
+    'server/routes.coffee'
     ], 'server');
 
 

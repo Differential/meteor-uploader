@@ -9,4 +9,4 @@ if Meteor.isServer
 
 if Meteor.isClient
   s3UploaderStream.on Meteor.userId(), (msg) ->
-    Session.set "s3Upload-#{msg.name}-progress", msg.progress
+    Session.set "uploader-progress-#{msg.name}", msg.progress

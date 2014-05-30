@@ -1,4 +1,4 @@
-class @s3Config
+class @Uploader
   _configuration: null
   @config: (config) ->
     @_configuration = config
@@ -7,4 +7,4 @@ class @s3Config
     if @_configuration?
       @_configuration
     else
-      throw new Meteor.Error "s3Uploader not configured!"
+      throw new Meteor.Error "Uploader not configured!"
