@@ -1,5 +1,5 @@
 Package.describe({
-  summary: 'Upload files to Files. Allows use of Knox Server-Side and get files urls on client-side.'
+  summary: 'Upload files to the clouds'
 });
 
 var both = ['client', 'server'];
@@ -44,8 +44,6 @@ Package.on_use(function (api) {
     ], 'server');
 
 
-
-  // Allows user access to Knox
   if(api.export) {
     // api.export('Knox','server');
     // api.export(['S3'],['client', 'server']);

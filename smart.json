@@ -1,10 +1,10 @@
 {
-  "name": "S3-Progress",
-  "description": "",
-  "homepage": "",
-  "author": "",
+  "name": "Uploader",
+  "description": "Upload files to the clouds",
+  "homepage": "https://github.com/Differential/meteor-uploader",
+  "author": "Differential",
   "version": "0.0.1",
-  "git": "",
+  "git": "https://github.com/Differential/meteor-uploader",
   "packages": {
     "iron-router": {},
     "handlebars-server": {},
