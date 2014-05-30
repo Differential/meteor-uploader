@@ -1,5 +1,11 @@
 <template name='Uploader'>
   <div class='s3-upload-controls row'>
+
+    {{#if current}}
+      <a data-url="{{current}}" class="s3-file-delete-button" href="#">Remove</a>
+      <img class="thumb" src="{{current}}">
+    {{/if}}
+
     {{#if error}}
       <div class='alert alert-danger'>{{error}}</div>
     {{/if}}

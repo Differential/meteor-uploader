@@ -99,7 +99,7 @@ Template.Uploader.events
   "click .s3-file-delete-button": (event, template) ->
     if confirm("Are you sure?")
       el = event.currentTarget
-      Meteor.call "S3delete", $(el).data("url"), template.data.onDelete
+      Meteor.call "uploaderDelete", $(el).data("url"), template.data.onDelete
 
   # Upload button
   "click .s3-file-upload-button": (event, template) ->

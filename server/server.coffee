@@ -54,10 +54,14 @@ Meteor.methods
     config = Uploader.getConfig()
     knox = Knox.createClient config
     path = url.split(".com/")[1]
+    future = new Future()
 
     knox.deleteFile path, (error, response) ->
       if error
         throw new Meteor.Error 500, "An error occured deleting your file"
+      if response
+        future.return path
+    future.wait()
 
 
   # List files that begin with @prefix
