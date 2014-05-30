@@ -1,9 +1,9 @@
 {
-  "name": "Uploader",
+  "name": "uploader",
   "description": "Upload files to the clouds",
   "homepage": "https://github.com/Differential/meteor-uploader",
   "author": "Differential",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "git": "https://github.com/Differential/meteor-uploader",
   "packages": {
     "iron-router": {},
