@@ -10,25 +10,22 @@ desc: Upload files to the clouds
 Renders an upload button so you can upload files from the browser to the cloud (currently only s3)
 
 ## Server Configuration
-{% highlight coffeescript %}
+```CoffeeScript
 Uploader.config
   key: "my-key"
   secret: "my-secret"
   bucket: "my-bucket"
   directory: "/" # Optional
-{% endhighlight %}
+```
 
 ## Client Example
-{% assign uploader = '{{> Uploader forProfilePic}}' %}
-`{{ uploader }}`
-
-{% highlight html %}
+```HTML
 <template name="MyTemplate">
-  {{uploader}}
+  {{> Uploader forProfilePic}}
 </template>
-{% endhighlight %}
+```
 
-{% highlight coffeescript %}
+```CoffeeScript
 Template.MyTemplate.helpers
   forProfilePic: ->
     name: "profilePic" # Unique name per uploader on page
@@ -42,4 +39,4 @@ Template.MyTemplate.helpers
       if result
         console.log "Deleted", result
         Session.set "profilePicUrl", null
-{% endhighlight %}
+```
