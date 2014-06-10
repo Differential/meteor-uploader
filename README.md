@@ -40,3 +40,21 @@ Template.MyTemplate.helpers
         console.log "Deleted", result
         Session.set "profilePicUrl", null
 ```
+
+## S3 Bucket Policy
+Add to your S3 bucket policy to get preview working.
+{
+	"Version": "2008-10-17",
+	"Id": "Policy1401826004702",
+	"Statement": [
+		{
+			"Sid": "Stmt1401825990142",
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": "*"
+			},
+			"Action": "s3:GetObject",
+			"Resource": "arn:aws:s3:::katchy-demo/*"
+		}
+	]
+}
