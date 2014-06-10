@@ -42,7 +42,7 @@ Template.MyTemplate.helpers
 ```
 
 ## S3 Bucket Policy
-Add to your S3 bucket policy to get preview working.
+Add to your S3 bucket policy to get preview working. Change "BUCKET_NAME" to the name of the bucket you're applying the policy to.
 ```JSON
 {
 	"Version": "2008-10-17",
@@ -55,7 +55,7 @@ Add to your S3 bucket policy to get preview working.
 				"AWS": "*"
 			},
 			"Action": "s3:GetObject",
-			"Resource": "arn:aws:s3:::katchy-demo/*"
+			"Resource": "arn:aws:s3:::BUCKET_NAME/*"
 		}
 	]
 }
