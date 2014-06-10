@@ -7,7 +7,7 @@
 
     {{#if queueExists}}
 
-    <!-- PROGRESS BAR -->
+      <!-- PROGRESS BAR -->
       <div class="progress progress-striped">
         <div class="progress-bar" role="progressbar" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progress}}%">
           <span class="sr-only">{{progress}}% Complete</span>
@@ -17,7 +17,7 @@
 
     {{else}}
 
-    <!-- UPLOAD BUTTON -->
+      <!-- UPLOAD BUTTON -->
       <input type="file" multiple={{settings.multiple}} class='hidden file-upload'>
       {{#if UI.contentBlock}}
         {{> UI.contentBlock}}
