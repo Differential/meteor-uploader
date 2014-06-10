@@ -43,6 +43,7 @@ Template.MyTemplate.helpers
 
 ## S3 Bucket Policy
 Add to your S3 bucket policy to get preview working.
+```JSON
 {
 	"Version": "2008-10-17",
 	"Id": "Policy1401826004702",
@@ -58,3 +59,4 @@ Add to your S3 bucket policy to get preview working.
 		}
 	]
 }
+```
