@@ -13,7 +13,7 @@
     {{#if progress}}
       {{> UploaderProgress}}
     {{else}}
-      {{> UploaderButton}}
+      {{> UploaderButton buttonClasses=buttonClasses}}
     {{/if}}
   </div>
 </template>
@@ -34,7 +34,7 @@
 <template name="UploaderButton">
   <input type="file" multiple={{multiple}} class='hidden s3-file-upload no-select'>
   <button type="button" disabled={{queueExists}}
-    class="btn btn-default btn-block s3-file-upload-button {{#if queued}}disabled{{/if}}">
+    class="btn btn-default btn-block s3-file-upload-button {{buttonClasses}}{{#if queued}}disabled{{/if}}">
     {{#if queueExists}}
       Preparing files for transfer...
     {{else}}
