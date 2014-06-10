@@ -21,7 +21,17 @@ Uploader.config
 ## Client Example
 ```HTML
 <template name="MyTemplate">
+  <!-- shows default button -->
   {{> uploader settings=forProfilePic}}
+  
+  <!-- OR -->
+
+  <!-- show custom button -->
+  {{#uploader settings=forProfilePic}}
+  <button class="btn btn-block btn-lg btn-green">
+    <i class="fa fa-upload"></i> Upload Profile Image
+  </button>
+  {{/uploader}}
 </template>
 ```
 
@@ -30,6 +40,8 @@ Template.MyTemplate.helpers
   forProfilePic: ->
     name: "profilePic" # Unique name per uploader on page
     multiple: true # Optional
+    onSelection: (fileList) -> # Callback when files are selected from dialog
+      console.log fileList
     onUpload: (error, result) -> # Callback after uploaded - runs once per file uploaded
       if result
         console.log result
