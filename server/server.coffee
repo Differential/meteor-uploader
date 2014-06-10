@@ -40,13 +40,15 @@ Meteor.methods
 
     put.on "progress", Meteor.bindEnvironment (progress) ->
       ev = name: options.name, progress: progress.percent
-      s3UploaderStream.emit Meteor.userId(), ev
+      uploaderStream.emit Meteor.userId(), ev
 
     put.on "error", Meteor.bindEnvironment (error) ->
       throw new Meteor.Error 500, "An error occured transferring #{file.originalName}"
 
     # Return url to file
-    knox.http future.wait()
+    url: knox.http future.wait()
+    originalFileName: options.file.originalName
+    uploaderName: options.name
 
 
   # Delete file from cloud

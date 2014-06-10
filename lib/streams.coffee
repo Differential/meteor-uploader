@@ -1,12 +1,12 @@
-@s3UploaderStream = new Meteor.Stream "s3Uploader"
+@uploaderStream = new Meteor.Stream "uploaderStream"
 
 if Meteor.isServer
-  s3UploaderStream.permissions.write (eventName) ->
+  uploaderStream.permissions.write (eventName) ->
     false
 
-  s3UploaderStream.permissions.read (eventName) ->
+  uploaderStream.permissions.read (eventName) ->
     eventName is @userId
 
 if Meteor.isClient
-  s3UploaderStream.on Meteor.userId(), (msg) ->
+  uploaderStream.on Meteor.userId(), (msg) ->
     Session.set "uploader-progress-#{msg.name}", msg.progress

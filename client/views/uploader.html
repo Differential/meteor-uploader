@@ -1,45 +1,34 @@
-<template name='Uploader'>
-  <div class='s3-upload-controls row'>
-
-    {{#if current}}
-      <a data-url="{{current}}" class="s3-file-delete-button" href="#">Remove</a>
-      <img class="thumb" src="{{current}}">
-    {{/if}}
+<template name='uploader'>
+  <div class='uploader-controls'>
 
     {{#if error}}
       <div class='alert alert-danger'>{{error}}</div>
     {{/if}}
 
-    {{#if progress}}
-      {{> UploaderProgress}}
-    {{else}}
-      {{> UploaderButton}}
-    {{/if}}
-  </div>
-</template>
-
-<template name="UploaderProgress">
-  {{#if complete}}
-    <div class='alert alert-success'>Upload Complete</div>
-  {{else}}
-    <div class="progress progress-striped">
-      <div class="progress-bar {{error_class}}" role="progressbar" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progress}}%">
-        <span class="sr-only">{{progress}}% Complete</span>
-      </div>
-    </div>
-    <span>Uploading {{currentlyUploading}} of {{queueSize}}</span>
-  {{/if}}
-</template>
-
-<template name="UploaderButton">
-  <input type="file" multiple={{multiple}} class='hidden s3-file-upload no-select'>
-  <button type="button" disabled={{queueExists}}
-    class="btn btn-default btn-block s3-file-upload-button {{#if queued}}disabled{{/if}}">
     {{#if queueExists}}
-      Preparing files for transfer...
+
+    <!-- PROGRESS BAR -->
+      <div class="progress progress-striped">
+        <div class="progress-bar" role="progressbar" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progress}}%">
+          <span class="sr-only">{{progress}}% Complete</span>
+        </div>
+      </div>
+      <span>Uploading {{currentlyUploading}} of {{queueSize}}</span>
+
     {{else}}
-      <span class="glyphicon glyphicon-cloud-upload fa fa-cloud-upload"></span>
-      Upload
+
+    <!-- UPLOAD BUTTON -->
+      <input type="file" multiple={{settings.multiple}} class='hidden file-upload'>
+      {{#if UI.contentBlock}}
+        {{> UI.contentBlock}}
+      {{else}}
+        <button type="button"
+          class="btn btn-default btn-block file-upload-button">
+          <span class="glyphicon glyphicon-cloud-upload fa fa-cloud-upload"></span>
+          Upload
+        </button>
+      {{/if}}
     {{/if}}
-  </button>
+
+  </div>
 </template>

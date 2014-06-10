@@ -1,33 +1,37 @@
 UI.registerHelper "queueSize", ->
-  Session.get "uploader-queueSize-#{@name}"
+  Session.get "uploader-queueSize-#{@settings.name}"
 
 UI.registerHelper "queueExists", ->
-  queueSize = Session.get "uploader-queueSize-#{@name}"
+  queueSize = Session.get "uploader-queueSize-#{@settings.name}"
   queueSize? and queueSize > 0
 
 UI.registerHelper "progress", ->
-  Session.get "uploader-progress-#{@name}"
+  Session.get "uploader-progress-#{@settings.name}"
 
 UI.registerHelper "progressExists", ->
-  progress = Session.get "uploader-progress-#{@name}"
+  progress = Session.get "uploader-progress-#{@settings.name}"
   progress? and progress > 0
 
 UI.registerHelper "error", ->
-  Session.get "uploader-error-#{@name}"
+  Session.get "uploader-error-#{@settings.name}"
 
 UI.registerHelper "currentlyUploading", ->
-    completed = Session.get "uploader-completed-#{@name}"
+    completed = Session.get "uploader-completed-#{@settings.name}"
     ++completed
 
 UI.registerHelper "complete", ->
-  queueSize = Session.get "uploader-queueSize-#{@name}"
-  completed = Session.get "uploader-completed-#{@name}"
+  queueSize = Session.get "uploader-queueSize-#{@settings.name}"
+  completed = Session.get "uploader-completed-#{@settings.name}"
   completed is queueSize
 
 resetState = (context) ->
-  Session.set "uploader-progress-#{context.data.name}", 0
-  Session.set "uploader-queueSize-#{context.data.name}", 0
-  Session.set "uploader-completed-#{context.data.name}", 0
+  Session.set "uploader-progress-#{context.data.settings.name}", 0
+  Session.set "uploader-queueSize-#{context.data.settings.name}", 0
+  Session.set "uploader-completed-#{context.data.settings.name}", 0
+
+clickHandler = (event, template) ->
+  event.preventDefault()
+  $(template.find(".file-upload")).click()
 
 #
 # S3 Upload
@@ -36,34 +40,33 @@ resetState = (context) ->
 # Watches queue and completed to determine when to reset
 completionWatch = null
 
-Template.Uploader.created = ->
+Template.uploader.created = ->
   # Clear the slate
   resetState @
 
   # Set up watch on session vars
   completionWatch = Deps.autorun =>
-    queueSize = Session.get "uploader-queueSize-#{@data.name}"
-    completed = Session.get "uploader-completed-#{@data.name}"
+    queueSize = Session.get "uploader-queueSize-#{@data.settings.name}"
+    completed = Session.get "uploader-completed-#{@data.settings.name}"
 
     # Have we completed the queue
     if completed? and completed > 0 and completed is queueSize
       # Reset file picker
-      $(".s3-file-upload").val null
+      $(".file-upload").val null
+      resetState @
 
-      # Reset values after 5 seconds (pause to show completion msg)
-      Meteor.setTimeout =>
-        resetState @
-      , 5000
-
-Template.Uploader.destroyed = ->
+Template.uploader.destroyed = ->
   # Stop the computation if we leave
   if completionWatch then completionWatch.stop()
 
-Template.Uploader.events
+Template.uploader.events
   # After file(s) have been chosen
   "change input[type=file]": (event, template) ->
     files = event.currentTarget.files
-    Session.set "uploader-queueSize-#{template.data.name}", files.length
+    Session.set "uploader-queueSize-#{template.data.settings.name}", files.length
+
+    if template.data.settings.onSelection
+      template.data.settings.onSelection(files)
 
     _.each files, (file) ->
       reader = new FileReader
@@ -79,28 +82,26 @@ Template.Uploader.events
         extension = (fileData.name).match(/\.[0-9a-z]{1,5}$/i)
         fileData.name = Meteor.uuid() + extension
 
-        options = template.data
+        options = template.data.settings
         options.file = fileData
 
         Meteor.call "uploaderUpload", options, (error, result) ->
           # Display error
-          if error then Session.set "uploader-error-#{template.data.name}", error.reason
+          if error then Session.set "uploader-error-#{template.data.settings.name}", error.reason
 
           # Increment completed count no matter what happens here
-          completed = Session.get "uploader-completed-#{template.data.name}"
-          Session.set "uploader-completed-#{template.data.name}", ++completed
+          completed = Session.get "uploader-completed-#{template.data.settings.name}"
+          Session.set "uploader-completed-#{template.data.settings.name}", ++completed
 
           # Pass results to user defined callback
-          template.data.onUpload(error, result)
+          if template.data.settings.onUpload
+            template.data.settings.onUpload(error, result)
 
       reader.readAsArrayBuffer file
 
-  # Delete button
-  "click .s3-file-delete-button": (event, template) ->
-    if confirm("Are you sure?")
-      el = event.currentTarget
-      Meteor.call "uploaderDelete", $(el).data("url"), template.data.onDelete
-
   # Upload button
-  "click .s3-file-upload-button": (event, template) ->
-    $(template.find(".s3-file-upload")).click()
+  "click button": (event, template) ->
+    clickHandler event, template
+
+  "click a": (event, template) ->
+    clickHandler event, template
