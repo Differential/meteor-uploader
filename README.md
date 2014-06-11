@@ -48,7 +48,8 @@ Template.MyTemplate.helpers
         Session.set "profilePicUrl", result
 ```
 
-## CORS Setup
+## AWS S3 Setup
+### CORS Setup
 ```XML
 <?xml version="1.0" encoding="UTF-8"?>
 <CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
@@ -59,7 +60,7 @@ Template.MyTemplate.helpers
 </CORSConfiguration>
 ```
 
-## S3 Bucket Policy
+### S3 Bucket Policy
 Add to your S3 bucket policy. Change "BUCKET_NAME" to the name of the bucket you're applying the policy to.
 ```JSON
 {
