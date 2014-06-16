@@ -50,8 +50,9 @@ Template.MyTemplate.helpers
 
 ## Methods
 You can delete files from s3 using the "uploaderDelete" method:
+```CoffeeScript
 Meteor.call "uploaderDelete", s3Url
-
+```
 
 ## AWS S3 Setup
 ### CORS Setup
