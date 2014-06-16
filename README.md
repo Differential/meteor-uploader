@@ -48,6 +48,11 @@ Template.MyTemplate.helpers
         Session.set "profilePicUrl", result
 ```
 
+## Methods
+You can delete files from s3 using the "uploaderDelete" method:
+Meteor.call "uploaderDelete", s3Url
+
+
 ## AWS S3 Setup
 ### CORS Setup
 ```XML
