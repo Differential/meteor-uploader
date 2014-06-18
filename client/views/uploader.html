@@ -13,12 +13,12 @@
           <span class="sr-only">{{progress}}% Complete</span>
         </div>
       </div>
-      <span>Uploading {{currentlyUploading}} of {{queueSize}}</span>
+      <span class="uploadingStatus">Uploading {{currentlyUploading}} of {{queueSize}}</span>
 
     {{else}}
 
       <!-- UPLOAD BUTTON -->
-      <input type="file" multiple={{settings.multiple}} class='hidden file-upload'>
+      <input type="file" accept="{{settings.accept}}" multiple={{settings.multiple}} class='hidden file-upload'>
       {{#if UI.contentBlock}}
         {{> UI.contentBlock}}
       {{else}}

@@ -47,6 +47,7 @@ Meteor.methods
 
     # Return url to file
     url: knox.http future.wait()
+    fileName: file.name
     originalFileName: options.file.originalName
     uploaderName: options.name
 

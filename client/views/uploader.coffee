@@ -33,6 +33,18 @@ clickHandler = (event, template) ->
   event.preventDefault()
   $(template.find(".file-upload")).click()
 
+dataURLToUA = (dataUrl) ->
+  binaryImg = atob(dataUrl.slice(dataUrl.indexOf("base64") + 7, dataUrl.length))
+  length = binaryImg.length
+  ab = new ArrayBuffer(length)
+  ua = new Uint8Array(ab)
+
+  i = 0
+  while i < length
+    ua[i] = binaryImg.charCodeAt(i)
+    i++
+
+  ua
 #
 # S3 Upload
 #
@@ -76,28 +88,40 @@ Template.uploader.events
         type: file.type
 
       reader.onload = (e) ->
-        fileData.data = new Uint8Array reader.result
-        fileData.originalName = fileData.name
+        uploadFile = -> #will search variables in a parent scope
+          fileData.originalName = fileData.name
 
-        extension = (fileData.name).match(/\.[0-9a-z]{1,5}$/i)
-        fileData.name = Meteor.uuid() + extension
+          extension = (fileData.name).match(/\.[0-9a-z]{1,5}$/i)
+          fileData.name = Meteor.uuid() + extension
 
-        options = template.data.settings
-        options.file = fileData
+          options = template.data.settings
+          options.file = fileData
 
-        Meteor.call "uploaderUpload", options, (error, result) ->
-          # Display error
-          if error then Session.set "uploader-error-#{template.data.settings.name}", error.reason
+          Meteor.call "uploaderUpload", options, (error, result) ->
+            # Display error
+            if error then Session.set "uploader-error-#{template.data.settings.name}", error.reason
 
-          # Increment completed count no matter what happens here
-          completed = Session.get "uploader-completed-#{template.data.settings.name}"
-          Session.set "uploader-completed-#{template.data.settings.name}", ++completed
+            # Increment completed count no matter what happens here
+            completed = Session.get "uploader-completed-#{template.data.settings.name}"
+            Session.set "uploader-completed-#{template.data.settings.name}", ++completed
 
-          # Pass results to user defined callback
-          if template.data.settings.onUpload
-            template.data.settings.onUpload(error, result)
+            # Pass results to user defined callback
+            if template.data.settings.onUpload
+              template.data.settings.onUpload(error, result)
 
-      reader.readAsArrayBuffer file
+        if _.isString reader.result
+          template.data.settings.manipulateImage reader.result, fileData, (dataUrl) ->
+            fileData.data = dataURLToUA dataUrl
+            uploadFile()
+        else
+          fileData.data = new Uint8Array reader.result
+          uploadFile()
+
+      if template.data.settings.manipulateImage? and file.type.match(/image.*/)?
+        reader.readAsDataURL file
+      else
+        reader.readAsArrayBuffer file
+
 
   # Upload button
   "click button": (event, template) ->
