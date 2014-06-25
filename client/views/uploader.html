@@ -13,7 +13,9 @@
           <span class="sr-only">{{progress}}% Complete</span>
         </div>
       </div>
-      <span>Uploading {{currentlyUploading}} of {{queueSize}}</span>
+      {{#if multipleQueue}}
+        <span>Uploading {{currentlyUploading}} of {{queueSize}}</span>
+      {{/if}}
 
     {{else}}
 

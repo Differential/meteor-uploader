@@ -1,6 +1,9 @@
 UI.registerHelper "queueSize", ->
   Session.get "uploader-queueSize-#{@settings.name}"
 
+UI.registerHelper "multipleQueue", ->
+  Session.get "uploader-queueSize-#{@settings.name}" > 1
+
 UI.registerHelper "queueExists", ->
   queueSize = Session.get "uploader-queueSize-#{@settings.name}"
   queueSize? and queueSize > 0
