@@ -1,3 +1,6 @@
+#
+#  GLOBAL TEMPLATE HELPERS
+#
 UI.registerHelper "queueSize", ->
   Session.get "uploader-queueSize-#{@settings.name}"
 
@@ -27,30 +30,42 @@ UI.registerHelper "complete", ->
   completed = Session.get "uploader-completed-#{@settings.name}"
   completed is queueSize
 
+
 resetState = (context) ->
   Session.set "uploader-progress-#{context.data.settings.name}", 0
   Session.set "uploader-queueSize-#{context.data.settings.name}", 0
   Session.set "uploader-completed-#{context.data.settings.name}", 0
 
-clickHandler = (event, template) ->
+clickHandler = (event, tpl) ->
   event.preventDefault()
-  $(template.find(".file-upload")).click()
+  $(tpl.find(".file-upload")).click()
 
 dataURLToUA = (dataUrl) ->
-  binaryImg = atob(dataUrl.slice(dataUrl.indexOf("base64") + 7, dataUrl.length))
+  binaryImg = window.atob(dataUrl.slice(dataUrl.indexOf("base64") + 7, dataUrl.length))
   length = binaryImg.length
-  ab = new ArrayBuffer(length)
-  ua = new Uint8Array(ab)
-
+  ab = new ArrayBuffer length
+  ua = new Uint8Array ab
   i = 0
   while i < length
     ua[i] = binaryImg.charCodeAt(i)
     i++
-
   ua
-#
-# S3 Upload
-#
+
+uploadFile = (settings, fileData) ->
+  settings.file = fileData
+
+  Meteor.call "uploaderUpload", settings, (error, result) ->
+    # Display error
+    if error then Session.set "uploader-error-#{settings.name}", error.reason
+
+    # Increment completed count no matter what happens here
+    completed = Session.get "uploader-completed-#{settings.name}"
+    Session.set "uploader-completed-#{settings.name}", ++completed
+
+    # Pass results to user defined callback
+    if settings.onUpload
+      settings.onUpload(error, result)
+
 
 # Watches queue and completed to determine when to reset
 completionWatch = null
@@ -76,59 +91,49 @@ Template.uploader.destroyed = ->
 
 Template.uploader.events
   # After file(s) have been chosen
-  "change input[type=file]": (event, template) ->
+  "change input[type=file]": (event, tpl) ->
+    settings = tpl.data.settings
     files = event.currentTarget.files
-    Session.set "uploader-queueSize-#{template.data.settings.name}", files.length
+    Session.set "uploader-queueSize-#{settings.name}", files.length
 
-    if template.data.settings.onSelection
-      template.data.settings.onSelection(files)
+    if settings.onSelection?
+      settings.onSelection(files)
 
     _.each files, (file) ->
-      reader = new FileReader
+      extension = (file.name).match(/\.[0-9a-z]{1,5}$/i)
+
       fileData =
-        name: file.name
+        originalName: file.name
+        name: Meteor.uuid() + extension
         size: file.size
         type: file.type
 
-      reader.onload = (e) ->
-        uploadFile = -> #will search variables in a parent scope
-          fileData.originalName = fileData.name
+      # Setup FileReader
+      reader = new FileReader
 
-          extension = (fileData.name).match(/\.[0-9a-z]{1,5}$/i)
-          fileData.name = Meteor.uuid() + extension
-
-          options = template.data.settings
-          options.file = fileData
-
-          Meteor.call "uploaderUpload", options, (error, result) ->
-            # Display error
-            if error then Session.set "uploader-error-#{template.data.settings.name}", error.reason
-
-            # Increment completed count no matter what happens here
-            completed = Session.get "uploader-completed-#{template.data.settings.name}"
-            Session.set "uploader-completed-#{template.data.settings.name}", ++completed
-
-            # Pass results to user defined callback
-            if template.data.settings.onUpload
-              template.data.settings.onUpload(error, result)
-
-        if _.isString reader.result
-          template.data.settings.manipulateImage reader.result, fileData, (dataUrl) ->
+      # Read file as DataURL for manipulation
+      if settings.manipulateImage? and file.type.match(/image.*/)?
+        reader.onload = ->
+          # Client code is responsible for uploading file
+          # by calling the provided callback
+          settings.manipulateImage reader.result, fileData, (dataUrl) ->
             fileData.data = dataURLToUA dataUrl
-            uploadFile()
-        else
-          fileData.data = new Uint8Array reader.result
-          uploadFile()
+            uploadFile settings, fileData
 
-      if template.data.settings.manipulateImage? and file.type.match(/image.*/)?
         reader.readAsDataURL file
+
+      # Read the file as ArrayBuffer
       else
+        reader.onload = ->
+          fileData.data = new Uint8Array reader.result
+          uploadFile settings, fileData
+
         reader.readAsArrayBuffer file
 
 
   # Upload button
-  "click button": (event, template) ->
-    clickHandler event, template
+  "click button": (event, tpl) ->
+    clickHandler event, tpl
 
-  "click a": (event, template) ->
-    clickHandler event, template
+  "click a": (event, tpl) ->
+    clickHandler event, tpl
