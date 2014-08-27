@@ -1,7 +1,7 @@
 Package.describe({
-  name: "schnie:uploader"
-  summary: "Upload files to the clouds"
-  version: "1.0.0"
+  name: "schnie:uploader",
+  summary: "Upload files to the clouds",
+  version: "1.0.0",
   git: "https://github.com/Differential/meteor-uploader"
 });
 
