@@ -1,7 +1,7 @@
 Package.describe({
   name: "di:uploader",
   summary: "Upload files to the clouds",
-  version: "1.0.0",
+  version: "1.0.1",
   git: "https://github.com/Differential/meteor-uploader"
 });
 
