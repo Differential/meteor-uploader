@@ -20,7 +20,7 @@ Package.onUse(function (api) {
     "underscore",
     "handlebars",
     "templating",
-    "arunoda:streams",
+    "arunoda:streams@0.1.17",
     "deps"
     ], both);
 
