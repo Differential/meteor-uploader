@@ -30,6 +30,7 @@ Meteor.methods
     headers =
       "Content-Type": file.type
       "Content-Length": buffer.length
+      "x-amz-acl": config.acl
 
     # Pipe file buffer to cloud
     put = knox.putStream file_stream_buffer, path, headers, (error, response) ->
