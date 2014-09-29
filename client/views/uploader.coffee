@@ -2,7 +2,7 @@ clickHandler = (event, tpl) ->
   event.preventDefault()
   $(tpl.find(".file-upload")).click()
 
-dataURLToUA = (dataUrl) ->
+dataURLToBlob = (dataUrl) ->
   binaryImg = window.atob(dataUrl.slice(dataUrl.indexOf("base64") + 7, dataUrl.length))
   length = binaryImg.length
   ab = new ArrayBuffer length
@@ -11,7 +11,7 @@ dataURLToUA = (dataUrl) ->
   while i < length
     ua[i] = binaryImg.charCodeAt(i)
     i++
-  ua
+  new Blob([ua])
 
 getFile = (id) ->
   files = @stateManager.get "files"
@@ -24,6 +24,11 @@ getFileDocument = (id) ->
 removeFile = (id) ->
   files = @stateManager.get "files"
   files = _.reject files, (file) -> file.id is id
+  @stateManager.set "files", files
+
+addFile = (file) ->
+  files = @stateManager.get "files"
+  files.push file
   @stateManager.set "files", files
 
 watchFilesCollection = ->
@@ -63,7 +68,7 @@ Template.uploader.created = ->
     if progress() is 100
       Meteor.setTimeout =>
         reset.call @
-      , 3000
+      , 2000
 
 
 Template.uploader.helpers
@@ -93,7 +98,16 @@ Template.uploader.events
     if settings.onSelection?
       settings.onSelection files
 
-    uploadedFiles = _.map files, (file) ->
-      UploaderFile.upload tpl.uploaderId, file, settings
-
-    tpl.stateManager.set "files", uploadedFiles
+    _.each files, (file) =>
+      if settings.manipulateImage? and file.type.match(/image.*/)?
+        reader = new FileReader
+        reader.onload = =>
+          settings.manipulateImage reader.result, file, (dataUrl) =>
+            blob = dataURLToBlob dataUrl
+            blob.name = file.name
+            uFile = UploaderFile.upload tpl.uploaderId, blob, settings
+            addFile.call tpl, uFile
+        reader.readAsDataURL file
+      else
+        uFile = UploaderFile.upload tpl.uploaderId, file, settings
+        addFile.call tpl, uFile

@@ -17,7 +17,6 @@ Uploader.config
   key: "my-key"
   secret: "my-secret"
   bucket: "my-bucket"
-  directory: "/" # Optional
 ```
 
 ## Client-side Example
@@ -28,11 +27,12 @@ Settings configuration:
 * name: Unique name per uploader on page. (Required)
 * multiple: Allow multiple file selection.
 * accept: Comma-separated list of unique content type specifiers.  See more [here](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input).
+* directory: Directory to place files in your bucket
 * onSelection: Callback fired when files are selected from dialog.
 * onUpload: Callback after uploaded.  Called once for each file.  Contains the new URL of the uploaded file.
 * manipulateImage: If specified, this callback will be called with the following arguments for image manipulation:
   * dataURL: {String} Base64 data URI of the uploaded image
-  * fileInfo: {Object} Information about the file
+  * file: {Object} File object
   * upload: {Function} Call this function after you have modified the image, passing it the DataURL of the modified image.
 
 
@@ -60,6 +60,7 @@ Template.MyTemplate.helpers
   forProfilePic: ->
     name: "profilePic"
     multiple: true
+    directory: profilePics
     accept: "image/*"
     onSelection: (fileList) ->
       console.log fileList

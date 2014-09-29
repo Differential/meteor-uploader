@@ -1,6 +1,5 @@
 Knox = Npm.require "knox"
 Future = Npm.require "fibers/future"
-# StreamBuffers = Npm.require "stream-buffers"
 
 Meteor.methods
 
