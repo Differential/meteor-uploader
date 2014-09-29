@@ -51,8 +51,12 @@ dataURLToUA = (dataUrl) ->
     i++
   ua
 
+
 uploadFile = (settings, fileData) ->
   settings.file = fileData
+
+  if settings.directUpload
+    return new UploaderS3DirectUpload(settings)
 
   Meteor.call "uploaderUpload", settings, (error, result) ->
     # Display error
