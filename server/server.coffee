@@ -85,7 +85,7 @@ Meteor.methods
     config = Uploader.getConfig()
     knox = Knox.createClient config
     path = (config.directory or "") + Meteor.userId() + '/' + objectName
-    signedUrl = knox.signedUrl(path, new Date(Date.now() + 60000 * 5 - 1),
+    signedUrl = knox.signedUrl(path, new Date(Date.now() + 60000 * 5),
       verb: "PUT"
       contentType: mimeType
       'x-amz-acl': 'public-read'
