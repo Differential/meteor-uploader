@@ -1,3 +1,4 @@
+<!--
 ---
 layout: default
 username: Differential
@@ -5,6 +6,7 @@ repo: meteor-uploader
 version: 0.1.1
 desc: Upload files to the clouds
 ---
+-->
 # meteor-uploader
 
 Renders an upload button so you can upload files from the browser to the cloud (currently only s3)
