@@ -1,8 +1,12 @@
 Knox = Npm.require "knox"
 Future = Npm.require "fibers/future"
-StreamBuffers = Npm.require "stream-buffers"
+# StreamBuffers = Npm.require "stream-buffers"
 
 Meteor.methods
+
+  uploadChunk: (uFile) ->
+    uFile.save "tmp"
+
 
   # @param {Object} [options] Uploader button's data context - passed from user
   # @param {String} [options.name] Name of uploader instance - user defined
@@ -17,22 +21,19 @@ Meteor.methods
     knox = Knox.createClient config
     file = options.file
 
-    file_stream_buffer = new StreamBuffers.ReadableStreamBuffer
-      frequency: 10      # in miliseconds
-      chunkSize: 2048    # in bytes.
-
     future = new Future()
 
     path = (config.directory or "") + Meteor.userId() + '/' + file.name
 
     buffer = new Buffer file.data
-    file_stream_buffer.put buffer
+    fileStreamBuffer.put buffer
+
     headers =
       "Content-Type": file.type
       "Content-Length": buffer.length
 
     # Pipe file buffer to cloud
-    put = knox.putStream file_stream_buffer, path, headers, (error, response) ->
+    put = knox.putStream fileStreamBuffer, path, headers, (error, response) ->
       if response
         future.return path
       if error

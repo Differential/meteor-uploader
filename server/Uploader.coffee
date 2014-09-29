@@ -1,5 +1,6 @@
 class @Uploader
   _configuration: null
+
   @config: (config) ->
     @_configuration = config
 

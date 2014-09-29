@@ -1,23 +1,19 @@
 <template name='uploader'>
   <div class='uploader-controls'>
 
-    {{#if error}}
-      <div class='alert alert-danger'>{{error}}</div>
-    {{/if}}
-
-    {{#if queueExists}}
+    {{#if filesSelected}}
 
       <!-- PROGRESS BAR -->
       <div class="progress progress-striped">
-        <div class="progress-bar" role="progressbar" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progress}}%">
-          <span class="sr-only">{{progress}}% Complete</span>
+        <div class="progress-bar {{#if complete}}progress-bar-success{{/if}}" role="progressbar" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progress}}%">
+          <span>{{progress}}%</span>
         </div>
       </div>
       {{#if multipleQueue}}
         <span>Uploading {{currentlyUploading}} of {{queueSize}}</span>
       {{/if}}
 
-    {{else}} 
+    {{else}}
 
       <!-- UPLOAD BUTTON -->
       <input type="file" accept="{{settings.accept}}" multiple={{settings.multiple}} class='hidden file-upload'>

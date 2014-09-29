@@ -1,51 +1,46 @@
 Package.describe({
-  summary: 'Upload files to the clouds'
+  name: "schnie:uploader",
+  summary: "Upload files to the clouds",
+  version: "2.0.0"
 });
 
-var both = ['client', 'server'];
+var both = ["client", "server"];
 
 Npm.depends({
-  'knox': '0.8.5',
-  'stream-buffers': '0.2.5'
+  "knox": "0.9.1",
+  "stream-buffers": "1.0.0"
 });
 
 Package.on_use(function (api) {
-  //Need service-configuration to use Meteor.method
+
+  api.versionsFrom("METEOR@0.9.0");
+
   api.use([
-    'coffeescript',
-    'underscore',
-    'handlebars',
-    'templating',
-    'iron-router',
-    'streams',
-    'deps'
-    ], ['client', 'server']);
+    "coffeescript",
+    "underscore",
+    "templating",
+    "ejson",
+    "reactive-dict"
+    ], ["client", "server"]);
 
-  api.use(['less'], ['client']);
+  api.use(["less"], ["client"]);
 
-  api.use(['handlebars-server'], 'server');
-
-  api.add_files([
-    'lib/streams.coffee'
+  api.addFiles([
+    "lib/uploadedFiles.coffee",
+    "lib/UploaderFile.coffee",
   ], both);
 
-  api.add_files([
-    'client/views/uploader.html',
-    'client/views/uploader.coffee',
-    'client/views/uploader.less'
-    ], 'client');
+  api.addFiles([
+    "client/views/uploader.html",
+    "client/views/uploader.coffee",
+    "client/views/uploader.less",
+    "client/UploaderState.coffee"
+    ], "client");
 
-  api.add_files([
-    'client/common/cors-configuration.handlebars',
-    'client/common/bucket-policy-configuration.handlebars',
-    'server/Uploader.coffee',
-    'server/server.coffee',
-    'server/routes.coffee'
-    ], 'server');
+  api.addFiles([
+    "server/Uploader.coffee",
+    "server/server.coffee",
+    "server/publications.coffee"
+    ], "server");
 
-
-  if(api.export) {
-    // api.export('Knox','server');
-    // api.export(['S3'],['client', 'server']);
-  }
 });
