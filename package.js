@@ -34,6 +34,7 @@ Package.onUse(function (api) {
 
   api.addFiles([
     "client/views/uploader.html",
+    "client/lib/s3Direct.coffee",
     "client/views/uploader.coffee",
     "client/views/uploader.less"
     ], "client");
