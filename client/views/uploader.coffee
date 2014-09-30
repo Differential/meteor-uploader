@@ -31,22 +31,6 @@ addFile = (file) ->
   files.push file
   @stateManager.set "files", files
 
-watchFilesCollection = ->
-  Meteor.subscribe "uploadedFiles", @uploaderId
-  UploadedFiles.find().observeChanges
-    changed: (id, fields) =>
-      if fields.url?
-        file = getFileDocument.call @, id
-        if file?
-          @data.settings.onUpload? null, file
-
-      if fields.error?
-        err = fields.error
-        file = getFileDocument.call @, id
-        if file?
-          removeFile.call @, id
-          @data.settings.onUpload? new Meteor.Error(err.error, err.reason), file
-
 progress = ->
   tpl = UI._templateInstance()
   files = tpl.stateManager.get "files"
@@ -58,17 +42,37 @@ progress = ->
 reset = ->
   @stateManager.set "files", []
 
+watchFilesCollection = ->
+  Meteor.subscribe "uploadedFiles", @uploaderId
+  UploadedFiles.find().observeChanges
+    changed: (id, fields) =>
+      if fields.url?
+        file = getFileDocument.call @, id
+        if file?
+          @data.settings.onUpload? null, file
+
+        if _.every(@stateManager.get("files"), (file) -> file.getDocument()?.url)
+          reset.call @
+
+      if fields.error?
+        err = fields.error
+        file = getFileDocument.call @, id
+        if file?
+          removeFile.call @, id
+          @data.settings.onUpload? new Meteor.Error(err.error, err.reason), file
+
+
 Template.uploader.created = ->
   @uploaderId = Random.id()
   @stateManager = new UploaderState @uploaderId
   reset.call @
   watchFilesCollection.call @
 
-  @autorun =>
-    if progress() is 100
-      Meteor.setTimeout =>
-        reset.call @
-      , 2000
+  # @autorun =>
+  #   if progress() is 100
+  #     Meteor.setTimeout =>
+  #       reset.call @
+  #     , 2000
 
 
 Template.uploader.helpers
