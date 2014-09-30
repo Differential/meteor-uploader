@@ -51,15 +51,18 @@ watchFilesCollection = ->
         if file?
           @data.settings.onUpload? null, file
 
-        if _.every(@stateManager.get("files"), (file) -> file.getDocument()?.url)
-          reset.call @
-
       if fields.error?
         err = fields.error
         file = getFileDocument.call @, id
         if file?
           removeFile.call @, id
           @data.settings.onUpload? new Meteor.Error(err.error, err.reason), file
+
+      allDone =  _.every @stateManager.get("files"), (file) ->
+        file.getDocument()?.url
+
+      if allDone then reset.call @
+
 
 
 Template.uploader.created = ->

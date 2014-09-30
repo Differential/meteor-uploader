@@ -195,6 +195,6 @@ if Meteor.isServer
     put.on "progress", Meteor.bindEnvironment (progress) =>
       @_updateStatus progress
 
-    put.on "error", Meteor.bindEnvironment (error) =>
-      @_setError new Meteor.Error 500, "An error occured transferring #{@name}"
-      fs.unlinkSync filePath
+    # put.on "error", Meteor.bindEnvironment (error) =>
+    #   @_setError new Meteor.Error 500, "An error occured transferring #{@name}"
+    #   fs.unlinkSync filePath

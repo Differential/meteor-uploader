@@ -4,6 +4,7 @@ Future = Npm.require "fibers/future"
 Meteor.methods
 
   uploadChunk: (uFile) ->
+    @unblock()
     uFile.save()
 
 

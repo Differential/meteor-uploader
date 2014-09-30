@@ -1,7 +1,7 @@
 Package.describe({
   name: "schnie:uploader",
   summary: "Upload files to the clouds",
-  version: "2.0.1"
+  version: "2.0.2"
 });
 
 var both = ["client", "server"];
