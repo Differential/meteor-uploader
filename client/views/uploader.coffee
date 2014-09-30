@@ -68,13 +68,6 @@ Template.uploader.created = ->
   reset.call @
   watchFilesCollection.call @
 
-  # @autorun =>
-  #   if progress() is 100
-  #     Meteor.setTimeout =>
-  #       reset.call @
-  #     , 2000
-
-
 Template.uploader.helpers
   progress: progress
 
