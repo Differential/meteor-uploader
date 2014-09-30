@@ -3,7 +3,7 @@
 layout: default
 username: Differential
 repo: meteor-uploader
-version: 2.0.2
+version: 2.0.3
 desc: Upload files to the clouds
 ---
 -->
