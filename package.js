@@ -1,7 +1,7 @@
 Package.describe({
   name: "schnie:uploader",
   summary: "Upload files to the clouds",
-  version: "2.0.3"
+  version: "2.0.4"
 });
 
 var both = ["client", "server"];
@@ -13,7 +13,7 @@ Npm.depends({
 
 Package.on_use(function (api) {
 
-  api.versionsFrom("METEOR@0.9.0");
+  api.versionsFrom("METEOR@1.4.1");
 
   api.use([
     "coffeescript",
